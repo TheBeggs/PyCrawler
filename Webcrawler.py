@@ -16,6 +16,8 @@ def scrapeLinks(url):
                 links.append(link)
     except Exception as e:
         print('Link', url, 'has exception:\n', e)
+        
+    return(links)
 
 def insertElement(element, tree, index):
     if element > tree[index][1]:
