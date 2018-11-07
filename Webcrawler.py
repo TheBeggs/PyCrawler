@@ -19,51 +19,27 @@ def scrapeLinks(url):
         
     return(links)
 
-def insertElement(element, tree, index):
-    if element > tree[index][1]:
-        if not tree[index][2] == None:
-            insertElement(element, tree, tree[index][2])
-        else:
-            tree[index] = (tree[index][0], tree[index][1], len(tree))
-            tree.append((None,element,None))
-    elif element < tree[index][1]:
-        if not tree[index][0] == None:
-            insertElement(element, tree, tree[index][0])
-        else:
-            tree[index] = (len(tree), tree[index][1], tree[index][2])
-            tree.append((None,element,None))
-
-def searchElement(element, tree, index):
-    if element == tree[index][1]:
-        return True
-    elif element > tree[index][1] and not tree[index][2] == None:
-        return searchElement(element, tree, tree[index][2])
-    elif element < tree[index][1] and not tree[index][0] == None:
-        return searchElement(element, tree, tree[index][0])
-    else:
-        return False
-
-startUrl = 'https://www.bbc.co.uk'
-visitedLinks = [(None,startUrl,None)]
+startUrl = 'https://www.netcraft.com/'
+visitedLinks = {startUrl}
 visitedCount = 1
 linkQueue = []
 
 linkQueue = linkQueue + scrapeLinks(startUrl)
 print('New links in queue', len(linkQueue),'\n')
 
-while visitedCount < 30:
+while visitedCount < 100:
     n = len(linkQueue)
     for link in linkQueue:
         print('Checking', link)
-        if not searchElement(link, visitedLinks, 0):
-            if visitedCount == 30:
+        if not link in visitedLinks:
+            if visitedCount == 100:
                 break
             linkQueue = linkQueue + scrapeLinks(link)
-            insertElement(link, visitedLinks, 0)
-            visitedCount += 1
+            visitedLinks.add(link)
+            visitedCount = len(visitedLinks)
     [linkQueue.pop() for i in range(0,n)]
     print('New links in queue', len(linkQueue),'\n')
 
 print('\n')
-[print(node[1]) for node in visitedLinks]
+[print(link) for link in visitedLinks]
 print('\nFinal visited total:',len(visitedLinks))
