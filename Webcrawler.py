@@ -15,16 +15,16 @@ def scrapeLinks(url):
             links.append(link)
     return(links)
 
-def insertElelment(element, tree, index):
+def insertElement(element, tree, index):
     if element > tree[index][1]:
         if not tree[index][2] == None:
-            insertElelment(element, tree, tree[index][2])
+            insertElement(element, tree, tree[index][2])
         else:
             tree[index] = (tree[index][0], tree[index][1], len(tree))
             tree.append((None,element,None))
     elif element < tree[index][1]:
         if not tree[index][0] == None:
-            insertElelment(element, tree, tree[index][0])
+            insertElement(element, tree, tree[index][0])
         else:
             tree[index] = (len(tree), tree[index][1], tree[index][2])
             tree.append((None,element,None))
