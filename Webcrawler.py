@@ -28,3 +28,13 @@ def insertElelment(element, tree, index):
         else:
             tree[index] = (len(tree), tree[index][1], tree[index][2])
             tree.append((None,element,None))
+
+def searchElement(element, tree, index):
+    if element == tree[index][1]:
+        return True
+    elif element > tree[index][1] and not tree[index][2] == None:
+        return searchElement(element, tree, tree[index][2])
+    elif element < tree[index][1] and not tree[index][0] == None:
+        return searchElement(element, tree, tree[index][0])
+    else:
+        return False
