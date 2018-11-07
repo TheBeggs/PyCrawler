@@ -19,7 +19,10 @@ def scrapeLinks(url):
         
     return(links)
 
-startUrl = 'https://www.netcraft.com/'
+
+#Precondiction: Url is valid
+startUrl = str(input('Enter strat url: '))
+findCount = int(input('Enter number of links to find: '))
 visitedLinks = {startUrl}
 visitedCount = 1
 linkQueue = []
@@ -27,16 +30,16 @@ linkQueue = []
 linkQueue = linkQueue + scrapeLinks(startUrl)
 
 #Nb. len() is of O(1) in Python
-while visitedCount < 100:
+while visitedCount < findCount:
     n = len(linkQueue)
     for link in linkQueue:
         if not link in visitedLinks:
-            if visitedCount == 100:
+            if visitedCount == findCount:
                 break
             linkQueue = linkQueue + scrapeLinks(link)
             visitedLinks.add(link)
             visitedCount = len(visitedLinks)
     [linkQueue.pop() for i in range(0,n)]
 
-
+print('\n')
 [print(link) for link in visitedLinks]
