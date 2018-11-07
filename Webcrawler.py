@@ -5,15 +5,17 @@ import re
 def scrapeLinks(url):
     http  = re.compile('^((http://)|(https://))')
     links = []
-    
-    page = request.urlopen(url)
-    soup = BeautifulSoup(page, 'html.parser')
-    
-    for tag in soup.find_all('a'):
-        link = str(tag.get('href'))
-        if http.match(link):
-            links.append(link)
-    return(links)
+
+    try:
+        page = request.urlopen(url)
+        soup = BeautifulSoup(page, 'html.parser')
+        
+        for tag in soup.find_all('a'):
+            link = str(tag.get('href'))
+            if http.match(link):
+                links.append(link)
+    except Exception as e:
+        print('Link', url, 'has exception:\n', e)
 
 def insertElement(element, tree, index):
     if element > tree[index][1]:
