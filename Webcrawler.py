@@ -42,3 +42,28 @@ def searchElement(element, tree, index):
         return searchElement(element, tree, tree[index][0])
     else:
         return False
+
+startUrl = 'https://www.bbc.co.uk'
+visitedLinks = [(None,startUrl,None)]
+visitedCount = 1
+linkQueue = []
+
+linkQueue = linkQueue + scrapeLinks(startUrl)
+print('New links in queue', len(linkQueue),'\n')
+
+while visitedCount < 30:
+    n = len(linkQueue)
+    for link in linkQueue:
+        print('Checking', link)
+        if not searchElement(link, visitedLinks, 0):
+            if visitedCount == 30:
+                break
+            linkQueue = linkQueue + scrapeLinks(link)
+            insertElement(link, visitedLinks, 0)
+            visitedCount += 1
+    [linkQueue.pop() for i in range(0,n)]
+    print('New links in queue', len(linkQueue),'\n')
+
+print('\n')
+[print(node[1]) for node in visitedLinks]
+print('\nFinal visited total:',len(visitedLinks))
